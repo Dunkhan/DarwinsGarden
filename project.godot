@@ -26,13 +26,20 @@ _global_script_class_icons={
 
 [application]
 
-config/name="Physics Experiments"
+config/name="Darwin's Garden"
 run/main_scene="res://World.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
 Proteins="*res://Genetics/Proteins.gd"
+
+[debug]
+
+gdscript/warnings/unsafe_property_access=true
+gdscript/warnings/unsafe_method_access=true
+gdscript/warnings/unsafe_cast=true
+gdscript/warnings/unsafe_call_argument=true
 
 [input]
 
@@ -79,4 +86,11 @@ ui_page_down={
 
 [rendering]
 
+quality/intended_usage/framebuffer_allocation=3
+quality/filters/anisotropic_filter_level=2
+quality/shadows/filter_mode=0
+quality/reflections/texture_array_reflections=false
+quality/reflections/high_quality_ggx=false
+quality/subsurface_scattering/quality=0
+quality/depth/hdr=false
 environment/default_environment="res://default_env.tres"

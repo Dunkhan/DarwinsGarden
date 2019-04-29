@@ -10,6 +10,8 @@ var genome = PoolByteArray ([1])
 var genetics = null
 var metabolism = 0.1
 var metabolism_multiplier = 0.1
+var color_update_frames = 100
+var color_update_counter = 0
 
 func _ready():
 	pass
@@ -39,7 +41,10 @@ func add_food(add_nutrition):
 
 func _process(delta):
 	nutrition -= delta*metabolism*metabolism_multiplier
-	process_color()
+	color_update_counter += 1
+	if color_update_counter >= color_update_frames:
+		process_color()
+		color_update_counter = 0
 	if nutrition <= 0:
 		die()
 		

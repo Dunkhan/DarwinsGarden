@@ -3,13 +3,13 @@ extends Node
 onready var Creature = preload("res://Creature/Creature.tscn")
 onready var Food = preload("Food.tscn")
 
-var food_timer
-var food_frequency = 4
+var food_frequency = 6
 var food_counter = 0
 var food_queue : Array = Array()
+var scarcity_counter = 0
 
 func _ready():
-	self.connect("tree_exiting", self, "on_quit")
+	var _error = self.connect("tree_exiting", self, "on_quit")
 	randomize()
 	#food_timer = Timer.new()
 	#food_timer.connect("timeout", self, "on_food_timer")
@@ -78,7 +78,9 @@ func _process(delta):
 		return
 	food_counter = 0
 	create_food(Vector3(randf()*200-100, 10, randf()*200-100))
-	create_food(Vector3(randf()*50-25, 10, randf()*50-25))
+	if randf()*8000 > scarcity_counter:
+		create_food(Vector3(randf()*50-25, 10, randf()*50-25))
+		scarcity_counter += 1
 	
 func create_food(position):
 	var f

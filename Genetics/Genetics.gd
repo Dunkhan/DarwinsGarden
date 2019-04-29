@@ -49,12 +49,14 @@ func mutate():
 	var result = genome
 	while randf()<=mutation_rate:
 		var type = randf()
-		if(type <= 0.25):
+		if(type <= 0.2):
 			result = sequence_move_mutation(result)
-		elif(type <= 0.5):
+		elif(type <= 0.4):
 			result = piece_switch_mutation(result)
-		elif(type <= 0.75):
+		elif(type <= 0.6):
 			result = bit_flip_mutation(result)
+		elif(type <= 0.8):
+			result = sequence_delete_mutation(result)
 		else:
 			result = sequence_duplicate_mutation(result)
 		
@@ -122,6 +124,19 @@ func sequence_duplicate_mutation(_genome):
 		_genome = before
 		_genome.append_array(after)
 		_genome.append_array(sequence)
+	return _genome
+	
+func sequence_delete_mutation(_genome):
+	print("sequence duplicate mutation")
+	if not len(_genome) > 1:
+		return
+	var start = randi()%(len(_genome)-1)
+	var length = min(randi()%10, len(_genome)-1-start)
+	if(length > 0 && length < len(_genome)):
+		var before = _genome.subarray(0, start)
+		var after = _genome.subarray(start+length, len(_genome)-1)
+		_genome = before
+		_genome.append_array(after)
 	return _genome
 
 

@@ -8,10 +8,11 @@ var limb : Generic6DOFJoint = null
 var is_core = false
 var size = 1
 var Part
-var metabolism = 0.1
+var metabolism = 0.2
 var move_timer : Timer = null
 var articulate_cost = 0
 var rigid_body
+var has_mouth
 
 func init(_is_core, part_subtree):
 	is_core = _is_core
@@ -40,6 +41,7 @@ func develop(genome):
 			bp.to_parent:
 				#print("returning to parent")
 				if not is_core:
+#warning-ignore:unsafe_method_access
 					get_parent().develop(genome)
 					break
 			
@@ -56,12 +58,12 @@ func add_part(genome):
 		direction = int_to_vector(token[0])
 	var new_part = Part.instance()
 	new_part.limb=Generic6DOFJoint.new()
-	var t  = self.get_transform()
+	var t = self.get_transform()
 	t.origin += direction
 	new_part.set_transform(t)
 	add_child(new_part)
 	new_part.add_child(new_part.limb)
-	new_part.limb.set_node_a(self.rigid_body.get_path())
+	new_part.limb.set_node_a(rigid_body.get_path())
 	new_part.limb.set_node_b(new_part.rigid_body.get_path())
 	set_child_limb_defaults(new_part.limb, direction)
 	var mesh = rigid_body.get_node("CollisionShape").get_node("MeshInstance")
@@ -83,23 +85,26 @@ func grow(genome):
 	value = value*(1.0/255.0) + 0.5
 	size = value
 	#print(value)
+#warning-ignore:unsafe_property_access
 	var new_transform = get_node("PartRigidBody").transform.scaled(Vector3(value, value, value))
 	if not is_core:
+#warning-ignore:unsafe_property_access
 		new_transform = new_transform.translated((new_transform.origin + get_parent().get_node("PartRigidBody").transform.origin)*value)
-	for child in child_parts:
-		var child_transform = child.get_node("PartRigidBody").transform.translated((child.get_node("PartRigidBody").transform.origin + get_node("PartRigidBody").transform.origin)*value)
 	set_transform(new_transform)
 #	set_limb_limits(true)
 
-func add_mouth(genome):
+func add_mouth(_genome):
 	#print("Adding mouth")
+	if has_mouth:
+		return 0
+	has_mouth = true
 	var organ = Organ.new()
 	organ.type = Organ.Organ_Types.mouth
 	organs.append(organ)
 	rigid_body.contact_monitor = true
 	rigid_body.contacts_reported = 4
 	rigid_body.connect("body_entered", self, "on_food_collision")
-	return 0.05
+	return 0.1
 
 func articulate(genome):
 	#print("articulating joint")
@@ -127,7 +132,7 @@ func articulate(genome):
 		
 	if move_timer == null:
 		move_timer = Timer.new()
-		move_timer.connect("timeout", self, "on_move_timer")
+		var _error = move_timer.connect("timeout", self, "on_move_timer")
 		add_child(move_timer)
 		move_timer.start()
 	var frequency = 10
@@ -160,6 +165,7 @@ func get_creature():
 	if is_core:
 		return get_parent()
 	else:
+#warning-ignore:unsafe_method_access
 		return get_parent().get_creature()
 		
 func set_child_limb_defaults(limb, direction):
