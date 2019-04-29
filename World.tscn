@@ -1,0 +1,87 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://TestScript.gd" type="Script" id=1]
+[ext_resource path="res://maujoe.camera_control/scripts/camera_control.gd" type="Script" id=2]
+
+[sub_resource type="Environment" id=1]
+ambient_light_color = Color( 1, 1, 1, 1 )
+ambient_light_energy = 0.1
+
+[sub_resource type="BoxShape" id=2]
+
+[sub_resource type="CubeMesh" id=3]
+
+[node name="WorldEnvironment" type="WorldEnvironment"]
+environment = SubResource( 1 )
+script = ExtResource( 1 )
+
+[node name="OmniLight" type="OmniLight" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 47.9865, 0 )
+omni_range = 100.0
+
+[node name="Ground" type="StaticBody" parent="."]
+transform = Transform( 100, 0, 0, 0, 0.1, 0, 0, 0, 100, 0, -0.05, 0 )
+collision_layer = 4
+collision_mask = 7
+
+[node name="CollisionShape" type="CollisionShape" parent="Ground"]
+shape = SubResource( 2 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Ground/CollisionShape"]
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="NorthWall" type="StaticBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 100, 100, 1, 0 )
+collision_layer = 4
+collision_mask = 7
+
+[node name="CollisionShape" type="CollisionShape" parent="NorthWall"]
+shape = SubResource( 2 )
+
+[node name="MeshInstance" type="MeshInstance" parent="NorthWall/CollisionShape"]
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="SouthWall" type="StaticBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 100, -100, 1, 0 )
+collision_layer = 4
+collision_mask = 7
+
+[node name="CollisionShape" type="CollisionShape" parent="SouthWall"]
+shape = SubResource( 2 )
+
+[node name="MeshInstance" type="MeshInstance" parent="SouthWall/CollisionShape"]
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="EastWall" type="StaticBody" parent="."]
+transform = Transform( 100, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 100 )
+collision_layer = 4
+collision_mask = 7
+
+[node name="CollisionShape" type="CollisionShape" parent="EastWall"]
+shape = SubResource( 2 )
+
+[node name="MeshInstance" type="MeshInstance" parent="EastWall/CollisionShape"]
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="WestWall" type="StaticBody" parent="."]
+transform = Transform( 100, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -100 )
+collision_layer = 4
+collision_mask = 7
+
+[node name="CollisionShape" type="CollisionShape" parent="WestWall"]
+shape = SubResource( 2 )
+
+[node name="MeshInstance" type="MeshInstance" parent="WestWall/CollisionShape"]
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="Camera" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.31893, 12.462 )
+script = ExtResource( 2 )
+pitch_limit = 70
+max_speed = Vector3( 10, 10, 10 )
+
