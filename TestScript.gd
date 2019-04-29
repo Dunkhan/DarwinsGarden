@@ -65,7 +65,7 @@ func creature_from_blueprint(blueprint):
 func creature_from_genome(genome, position : Vector3):
 	var c = Creature.instance()
 	var t  = c.get_transform()
-	t.origin = Vector3(position.x + randf()*2-1, position.y + randf(), position.z + randf()*2-1)
+	t.origin = Vector3(position.x + randf()*2-1, position.y + 5, position.z + randf()*2-1)
 	c.set_transform(t)
 	add_child(c)
 	c.genome = genome
@@ -83,7 +83,6 @@ func create_food(position):
 	var f = Food.instance()
 	var t = f.get_transform()
 	t.origin = position
-	#t.origin = Vector3(randf()*1, 10, randf()*1)
 	f.set_transform(t)
 	add_child(f)
 		

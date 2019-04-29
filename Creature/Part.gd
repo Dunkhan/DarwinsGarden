@@ -98,8 +98,6 @@ func add_mouth(genome):
 	organs.append(organ)
 	rigid_body.contact_monitor = true
 	rigid_body.contacts_reported = 4
-	rigid_body.collision_layer = rigid_body.collision_layer | (4 << 1)
-	rigid_body.collision_mask = rigid_body.collision_mask | (4 << 1)
 	rigid_body.connect("body_entered", self, "on_food_collision")
 	return 0.05
 
