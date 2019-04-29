@@ -46,18 +46,19 @@ func genome_to_string(bytes):
 	return result
 	
 func mutate():
+	var result = genome
 	while randf()<=mutation_rate:
 		var type = randf()
 		if(type <= 0.25):
-			genome = sequence_move_mutation(genome)
+			result = sequence_move_mutation(result)
 		elif(type <= 0.5):
-			genome = piece_switch_mutation(genome)
+			result = piece_switch_mutation(result)
 		elif(type <= 0.75):
-			genome = bit_flip_mutation(genome)
+			result = bit_flip_mutation(result)
 		else:
-			genome = sequence_duplicate_mutation(genome)
+			result = sequence_duplicate_mutation(result)
 		
-	return genome
+	return result
 
 func bit_flip_mutation(_genome):
 	print("bit flip mutation")
