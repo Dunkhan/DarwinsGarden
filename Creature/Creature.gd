@@ -41,7 +41,7 @@ func _process(delta):
 	nutrition -= delta*metabolism*metabolism_multiplier
 	process_color()
 	if nutrition <= 0:
-		get_parent().remove_child(self)
+		die()
 		
 func process_color():
 	var color_mod = clamp(nutrition/20, 0, 1)
@@ -54,3 +54,6 @@ func procreate():
 	print(str(part.rigid_body.get_global_transform().origin))
 	get_parent().creature_from_genome(new_genome, part.rigid_body.get_global_transform().origin)
 	process_color()
+	
+func die():
+	self.queue_free()

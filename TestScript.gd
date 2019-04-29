@@ -6,6 +6,7 @@ onready var Food = preload("Food.tscn")
 var food_timer
 var food_frequency = 4
 var food_counter = 0
+var food_queue : Array = Array()
 
 func _ready():
 	self.connect("tree_exiting", self, "on_quit")
@@ -80,9 +81,13 @@ func _process(delta):
 	create_food(Vector3(randf()*50-25, 10, randf()*50-25))
 	
 func create_food(position):
-	var f = Food.instance()
+	var f
+	if food_queue.empty():
+		f = Food.instance()
+	else:
+		f = food_queue.pop_front()
+	add_child(f)
 	var t = f.get_transform()
 	t.origin = position
 	f.set_transform(t)
-	add_child(f)
 		

@@ -146,10 +146,16 @@ func on_move_timer():
 		limb.set(property, -value)
 
 func on_food_collision(body):
-	if (body is Food):
-		body.get_parent().remove_child(body)
-		get_creature().add_food(body.food_value)
-	
+	if body is Food && not body.is_eaten:
+		body.is_eaten = true
+		call_deferred("process_food_collision", body)
+		
+func process_food_collision(body):
+	body.get_parent().food_queue.push_front(body)
+	body.get_parent().remove_child(body)
+	get_creature().add_food(body.food_value)
+	body.is_eaten = false
+		
 func get_creature():
 	if is_core:
 		return get_parent()
