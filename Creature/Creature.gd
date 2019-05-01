@@ -49,7 +49,7 @@ func _process(delta):
 		die()
 		
 func process_color():
-	var color_mod = clamp(nutrition/20, 0, 1)
+	var color_mod = clamp(nutrition/20.0, 0, 1)
 	part.set_color(Color(1 - color_mod, color_mod, 0))
 	
 func procreate():

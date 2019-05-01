@@ -3,7 +3,7 @@ extends Node
 onready var Creature = preload("res://Creature/Creature.tscn")
 onready var Food = preload("Food.tscn")
 
-var food_frequency = 6
+var food_frequency = 7
 var food_counter = 0
 var food_queue : Array = Array()
 var scarcity_counter = 0
@@ -78,7 +78,7 @@ func _process(delta):
 		return
 	food_counter = 0
 	create_food(Vector3(randf()*200-100, 10, randf()*200-100))
-	if randf()*8000 > scarcity_counter:
+	if randf()*10000 > scarcity_counter:
 		create_food(Vector3(randf()*50-25, 10, randf()*50-25))
 		scarcity_counter += 1
 	
