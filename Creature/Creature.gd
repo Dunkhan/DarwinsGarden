@@ -60,5 +60,9 @@ func procreate():
 	get_parent().creature_from_genome(new_genome, part.rigid_body.get_global_transform().origin)
 	process_color()
 	
+func part_at_point(point):
+	var result = part.contains_point(point)
+	return result
+	
 func die():
 	self.queue_free()

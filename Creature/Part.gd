@@ -50,29 +50,8 @@ func develop(genome):
 	
 func add_part(genome):
 	#print("Growing new part")
-	var token = genome.next_token()
-	var direction
-	if len(token) == 0:
-		direction = int_to_vector(randi())
-	else:
-		direction = int_to_vector(token[0])
-	var new_part = Part.instance()
-	new_part.limb=Generic6DOFJoint.new()
-	var t = self.get_transform()
-	t.origin += direction
-	new_part.set_transform(t)
-	add_child(new_part)
-	new_part.add_child(new_part.limb)
-	new_part.limb.set_node_a(rigid_body.get_path())
-	new_part.limb.set_node_b(new_part.rigid_body.get_path())
-	set_child_limb_defaults(new_part.limb, direction)
-	var mesh = rigid_body.get_node("CollisionShape").get_node("MeshInstance")
-	var child_mesh = new_part.rigid_body.get_node("CollisionShape").get_node("MeshInstance")
-	child_mesh.set_surface_material(0, mesh.get_surface_material(0))
-#	new_part.set_limb_limits(false)
-	new_part.init(false, Part)
-	child_parts.append(new_part)
-	
+	var direction = get_vector(genome)
+	var new_part = part_in_direction(transform.origin + (direction * size))
 	return new_part.develop(genome)
 
 func grow(genome):
@@ -180,32 +159,20 @@ func set_child_limb_defaults(limb, direction):
 	limb.set("angular_limit_z/softness", 0.1)
 	limb.transform = limb.transform.translated(direction)
 	
-#func set_limb_limits(recurse):
-#	if(limb != null):
-#		var distance = size + get_parent().size
-#		limb.set("linear_limit_x/upper_distance", distance*0)
-#		limb.set("linear_limit_y/upper_distance", distance*0)
-#		limb.set("linear_limit_z/upper_distance", distance*0)
-#		limb.set("linear_limit_x/lower_distance", distance*0)
-#		limb.set("linear_limit_y/lower_distance", distance*0)
-#		limb.set("linear_limit_z/lower_distance", distance*0)
-#		limb.set("linear_spring_x/stiffness", 0.1)
-#		limb.set("linear_spring_y/stiffness", 0.1)
-#		limb.set("linear_spring_z/stiffness", 0.1)
-#		limb.set("linear_spring_x/damping", 0.1)
-#		limb.set("linear_spring_y/damping", 0.1)
-#		limb.set("linear_spring_z/damping", 0.1)
-#
-#	if recurse:
-#		for child in child_parts:
-#			child.set_limb_limits(false)
-	
-func int_to_vector(value):
-	var distance = size+1
-	var x = distance if value%6 == 0 else (-distance if value%6 == 1 else 0)
-	var y = distance if value%6 == 2 else (-distance if value%6 == 3 else 0)
-	var z = distance if value%6 == 4 else (-distance if value%6 == 5 else 0)
-	return Vector3(x,y,z)
+func get_vector(genome):
+	var token = genome.next_token()
+	if(len(token) == 0):
+		return Vector3(1,0,0)
+	var x = token[0]*(2/255.0)-1.0
+	token = genome.next_token()
+	if(len(token) == 0):
+		return Vector3(x,0,0)
+	var y = token[0]*(2/255.0)-1.0
+	token = genome.next_token()
+	if(len(token) == 0):
+		return Vector3(x,y,0)
+	var z = token[0]*(2/255.0)-1.0
+	return Vector3(x,y,z).normalized() * (1+size)
 	
 func set_color(color):
 	var mesh = rigid_body.get_node("CollisionShape").get_node("MeshInstance")
@@ -213,6 +180,32 @@ func set_color(color):
 	for child in child_parts:
 		child.set_color(color)
 		
-func _notification(what):
-    if what == MainLoop.NOTIFICATION_WM_QUIT_REQUEST:
-        get_tree().quit() # default behavior
+func contains_point(vector):
+	if transform.origin.distance_to(vector) < size:
+		return self
+	for child in child_parts:
+		var result = child.contains_point(vector)
+		if result != null:
+			return result
+	return null
+
+func part_in_direction(direction):
+	var new_part = get_creature().part_at_point(transform.origin + direction)
+	if new_part == null:
+		new_part = get_creature().Part.instance()
+		var t = self.get_transform()
+		t.origin += direction
+		new_part.set_transform(t)
+		new_part.limb=Generic6DOFJoint.new()
+		add_child(new_part)
+		new_part.add_child(new_part.limb)
+		new_part.limb.set_node_a(rigid_body.get_path())
+		new_part.limb.set_node_b(new_part.rigid_body.get_path())
+		set_child_limb_defaults(new_part.limb, direction)
+		var mesh = rigid_body.get_node("CollisionShape").get_node("MeshInstance")
+		var child_mesh = new_part.rigid_body.get_node("CollisionShape").get_node("MeshInstance")
+		child_mesh.set_surface_material(0, mesh.get_surface_material(0))
+	#	new_part.set_limb_limits(false)
+		new_part.init(false, Part)
+		child_parts.append(new_part)
+	return new_part

@@ -21,34 +21,34 @@ func _ready():
 	creature_from_blueprint(
 		[
 			[bp.organ_mouth],
-			[bp.new_part, [0]],
+			[bp.new_part, [255, 128, 128]],
 			[bp.organ_mouth],
 			[bp.to_parent],
-			[bp.new_part, [1]],
+			[bp.new_part, [128, 128, 255]],
 			[bp.organ_mouth],
 			[bp.to_parent],
-			[bp.new_part, [4]],
+			[bp.new_part, [0, 128, 128]],
 			[bp.organ_mouth],
 			[bp.to_parent],
-			[bp.new_part, [5]],
+			[bp.new_part, [128, 128, 0]],
 			[bp.organ_mouth],
 		])
 	print("creature 2")
 	creature_from_blueprint(
 		[
 			[bp.organ_mouth],
-			[bp.new_part, [1]],
+			[bp.new_part, [255, 128, 128]],
 			[bp.articulation, [100, 200, 300, 400, 500, 600, 700, 800, 900, 2]],
 			[bp.grow, [250]],
 			[bp.to_parent],
-			[bp.new_part, [0]],
+			[bp.new_part, [0, 128, 128]],
 			[bp.organ_mouth],
 		])
 	print("creature 3")
 	creature_from_blueprint(
 		[
 			[bp.organ_mouth],
-			[bp.new_part, [1]],
+			[bp.new_part, [255, 128, 128]],
 			[bp.articulation, [100, 200, 300, 400, 500, 600, 700, 800, 900, 2]],
 		])
 
