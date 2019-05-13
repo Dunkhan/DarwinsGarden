@@ -1,4 +1,5 @@
 extends Spatial
+class_name Part
 
 var Organ = preload("Organ.gd")
 
@@ -64,13 +65,23 @@ func grow(genome):
 	value = value*(1.0/255.0) + 0.5
 	size = value
 	#print(value)
-#warning-ignore:unsafe_property_access
+	#warning-ignore:unsafe_property_access
 	var new_transform = get_node("PartRigidBody").transform.scaled(Vector3(value, value, value))
-	if not is_core:
-#warning-ignore:unsafe_property_access
-		new_transform = new_transform.translated((new_transform.origin + get_parent().get_node("PartRigidBody").transform.origin)*value)
 	set_transform(new_transform)
-#	set_limb_limits(true)
+	if not is_core:
+		#warning-ignore:unsafe_property_access
+		new_transform = new_transform.translated((new_transform.origin + get_parent().get_node("PartRigidBody").transform.origin)*value)
+		set_transform(new_transform)
+		var new_limb = limb.duplicate()
+		limb.queue_free()
+		limb = new_limb
+		#warning-ignore:unsafe_property_access
+		var parent = get_parent()
+		limb.set_node_a(get_parent().rigid_body.get_path())
+		limb.set_node_b(rigid_body.get_path())
+		add_child(limb)
+	
+	
 
 func add_mouth(_genome):
 	#print("Adding mouth")
@@ -194,7 +205,7 @@ func part_in_direction(direction):
 	if new_part == null:
 		new_part = get_creature().Part.instance()
 		var t = self.get_transform()
-		t.origin += direction
+		t.origin = direction
 		new_part.set_transform(t)
 		new_part.limb=Generic6DOFJoint.new()
 		add_child(new_part)

@@ -18,10 +18,22 @@ _global_script_classes=[ {
 "class": "Food",
 "language": "GDScript",
 "path": "res://Food.gd"
+}, {
+"base": "Node",
+"class": "Genetics",
+"language": "GDScript",
+"path": "res://Genetics/Genetics.gd"
+}, {
+"base": "Spatial",
+"class": "Part",
+"language": "GDScript",
+"path": "res://Creature/Part.gd"
 } ]
 _global_script_class_icons={
 "Base_Proteins": "",
-"Food": ""
+"Food": "",
+"Genetics": "",
+"Part": ""
 }
 
 [application]

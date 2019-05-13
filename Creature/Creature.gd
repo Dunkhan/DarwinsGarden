@@ -16,7 +16,9 @@ var color_update_counter = 0
 func _ready():
 	pass
 	
-func init():
+func init(_genome = null):
+	if _genome:
+		genome = _genome
 	part = Part.instance()
 	part.init(true, Part)
 	add_child(part)

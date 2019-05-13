@@ -1,4 +1,5 @@
 extends Node
+class_name Genetics
 
 var genome = null
 var pointer = 0
@@ -39,7 +40,14 @@ func create_genome(args):
 	#print(genome_to_string(result))
 	return result
 	
-func genome_to_string(bytes):
+static func genome_from_string(genome_string):
+	var tokens = genome_string.split(",", true)
+	var result = PoolByteArray([])
+	for i in tokens:
+		result.append(int(i))
+	return result
+	
+static func genome_to_string(bytes):
 	var result = ""
 	for byte in bytes:
 		result = result + str(byte) + ","

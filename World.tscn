@@ -1,7 +1,9 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://TestScript.gd" type="Script" id=1]
 [ext_resource path="res://maujoe.camera_control/scripts/camera_control.gd" type="Script" id=2]
+[ext_resource path="res://Control.gd" type="Script" id=3]
+[ext_resource path="res://PlayerControls.gd" type="Script" id=4]
 
 [sub_resource type="Environment" id=1]
 ambient_light_color = Color( 1, 1, 1, 1 )
@@ -84,4 +86,14 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.31893, 12.462 )
 script = ExtResource( 2 )
 pitch_limit = 70
 max_speed = Vector3( 10, 10, 10 )
+
+[node name="Control" type="Control" parent="Camera"]
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+script = ExtResource( 3 )
+
+[node name="PlayerControls" type="Node" parent="."]
+script = ExtResource( 4 )
 

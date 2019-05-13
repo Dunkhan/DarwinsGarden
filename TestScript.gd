@@ -51,6 +51,7 @@ func _ready():
 			[bp.new_part, [255, 128, 128]],
 			[bp.articulation, [100, 200, 300, 400, 500, 600, 700, 800, 900, 2]],
 		])
+#	creature_from_string("3,1,255,128,128,3,5,1,128,128,3,5,1,128,128,5,1,0,128,128,3,0,3,128,255,3,5,3")
 
 func on_quit():
 	print("quitting")
@@ -62,6 +63,10 @@ func creature_from_blueprint(blueprint):
 	c.set_transform(t)
 	add_child(c)
 	c.init_blueprint(blueprint)
+	
+func creature_from_string(genome_string):
+	var t = Vector3(0,0,0)
+	creature_from_genome(Genetics.genome_from_string(genome_string), t)
 	
 func creature_from_genome(genome, position : Vector3):
 	var c = Creature.instance()
