@@ -58,7 +58,6 @@ func procreate():
 	print("procreating")
 	nutrition = nutrition/2
 	var new_genome = genetics.mutate()
-	print(str(part.rigid_body.get_global_transform().origin))
 	get_parent().creature_from_genome(new_genome, part.rigid_body.get_global_transform().origin)
 	process_color()
 	

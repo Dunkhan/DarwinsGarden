@@ -14,6 +14,7 @@ var move_timer : Timer = null
 var articulate_cost = 0
 var rigid_body
 var has_mouth
+var relative_position : Vector3
 
 func init(_is_core, part_subtree):
 	is_core = _is_core
@@ -24,6 +25,8 @@ func _ready():
 
 func develop(genome):
 	#print("starting part")
+	if(relative_position == Vector3(0,0,0) && not is_core):
+		relative_position = transform.origin + get_parent().transform.origin
 	var bp = Base_Proteins.Base_Proteins
 	var next_protein = genome.next_protein()
 	while next_protein != Base_Proteins.Base_Proteins.end:
@@ -42,7 +45,7 @@ func develop(genome):
 			bp.to_parent:
 				#print("returning to parent")
 				if not is_core:
-#warning-ignore:unsafe_method_access
+					#warning-ignore:unsafe_method_access
 					get_parent().develop(genome)
 					break
 			
@@ -66,22 +69,9 @@ func grow(genome):
 	size = value
 	#print(value)
 	#warning-ignore:unsafe_property_access
-	var new_transform = get_node("PartRigidBody").transform.scaled(Vector3(value, value, value))
-	set_transform(new_transform)
-	if not is_core:
-		#warning-ignore:unsafe_property_access
-		new_transform = new_transform.translated((new_transform.origin + get_parent().get_node("PartRigidBody").transform.origin)*value)
-		set_transform(new_transform)
-		var new_limb = limb.duplicate()
-		limb.queue_free()
-		limb = new_limb
-		#warning-ignore:unsafe_property_access
-		var parent = get_parent()
-		limb.set_node_a(get_parent().rigid_body.get_path())
-		limb.set_node_b(rigid_body.get_path())
-		add_child(limb)
-	
-	
+	var new_transform = get_node("PartRigidBody").get_node("CollisionShape").transform.scaled(Vector3(value, value, value))
+	get_node("PartRigidBody").get_node("CollisionShape").set_transform(new_transform)
+	refresh_position()	
 
 func add_mouth(_genome):
 	#print("Adding mouth")
@@ -220,3 +210,22 @@ func part_in_direction(direction):
 		new_part.init(false, Part)
 		child_parts.append(new_part)
 	return new_part
+	
+func refresh_position():
+	#warning-ignore:unsafe_property_access
+	if(not is_core):
+		var new_distance = (size+get_parent().size)/2
+		var new_transform = transform
+		new_transform.origin = get_parent().transform.origin
+		new_transform = new_transform.translated(relative_position * new_distance)
+		set_transform(new_transform)
+		var new_limb = limb.duplicate()
+		limb.queue_free()
+		limb = new_limb
+		#warning-ignore:unsafe_property_access
+		var parent = get_parent()
+		limb.set_node_a(get_parent().rigid_body.get_path())
+		limb.set_node_b(rigid_body.get_path())
+		add_child(limb)
+	for child in child_parts:
+		child.refresh_position()
