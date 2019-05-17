@@ -1,7 +1,7 @@
--layout issue with 3,1,255,128,130,3,5,1,3,5,1,128,128,255,3,5,128,128,3,128,3
+-layout issue with 3,1,255,128,128,3,5,1,128,129,255,1,5,1,0,128,128,3,5,1,128,130,0,3,5,1
 -try to see if the distribution of food can be finer, maybe increase frequency and decrease nutrition. It may de necessary to turn of rendering. This should make small creatures more viable
 -implement eating of small creatures
 -implement food dropping on death
 -implement claws for damaging other creatures
 
-Successful creature: 3,1,255,128,128,4,100,200,44,144,244,88,144,244,188,1,188,32,132,2,2,250,5,1,0,128,128,3
+Successful creature: 3,1,255,128,128,4,100,200,44,144,244,88,144,244,188,1,188,32,132,2,2,250,5,1,0,128,128,

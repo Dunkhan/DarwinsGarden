@@ -3,7 +3,7 @@ extends Node
 onready var Creature = preload("res://Creature/Creature.tscn")
 onready var Food = preload("Food.tscn")
 
-var food_frequency = 7
+var food_frequency = 35
 var food_counter = 0
 var food_queue : Array = Array()
 var scarcity_counter = 0
